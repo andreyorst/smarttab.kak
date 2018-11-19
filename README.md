@@ -28,7 +28,7 @@ After that you can use **smarttab.kak**.
 
 ## Usage
 
-This code adds these three commands to toggle different policy when using <kbd>Tab</kbd> and <kbd>></kbd> keys: 
+This plugin adds these three commands to toggle different policy when using <kbd>Tab</kbd> and <kbd>></kbd> keys: 
 * `noexpandtab` - use `tab` for everything.  
   <kbd>Tab</kbd> will insert `\t` character, and <kbd>></kbd> will use `\t` character when indenting.  
   Aligning cursors with <kbd>&</kbd> uses `\t` character.
