@@ -13,7 +13,7 @@ plug "andreyorst/smarttab.kak"
 ```
 Source your `kakrc` or restart Kakoune, and execute `:plug-install`. Or if you don't want
 to source configuration file or restart Kakoune, simply run `plug-install andreyorst/smarttab.kak`.
-It will be enabled automatically on buffer change. Use `powerline-rebuild` to activate it manually.
+It will be enabled automatically.
 
 ### Without plugin manager
 
@@ -22,7 +22,7 @@ Clone this repo somewhere
 git clone https://github.com/andreyorst/smarttab.kak.git
 ```
 
-And source the `smarttab.kak` script from it.
+And `source` the `smarttab.kak` script from it.
 
 After that you can use **smarttab.kak**.
 
@@ -39,6 +39,15 @@ This plugin adds these three commands to toggle different policy when using <kbd
   non-whitespace character, and insert spaces if cursor is after any non-whitespace character. Aligning  
   cursors with <kbd>&</kbd> uses `space`.
 
-You can set `softtabstop` option to configure how many `space`s should be treated as single
-`tab` character when deleting spaces with backspace.
+By default **smarttab.kak** affects only <kbd>Tab</kbd> and <kbd>></kbd> keys. If you want to deindent
+lines that are being indented with the spaces by hitting <kbd>Backspace</kbd>, you can set `softtabstop`
+option. This option describes how many `space`s should be treated as single `tab` character when deleting
+spaces with backspace.
+
+If you've used **plug.kak** for installation, you can set it within the `plug` command:
+```kak
+plug "andreyorst/smarttab.kak" %{
+    set-option global softtabstop 4 # or other preferred value
+}
+```
 
