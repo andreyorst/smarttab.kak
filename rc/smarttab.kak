@@ -19,20 +19,20 @@ str smarttab_mode ''
 declare-option -hidden int oldindentwidth %opt{indentwidth}
 define-command -hidden smarttab-set %{ evaluate-commands %sh{
     if [ $kak_opt_indentwidth -eq 0 ]; then
-        echo "set-option window indentwidth $kak_opt_oldindentwidth"
+        echo "set-option buffer indentwidth $kak_opt_oldindentwidth"
     else
-        echo "set-option window oldindentwidth $kak_opt_indentwidth"
+        echo "set-option buffer oldindentwidth $kak_opt_indentwidth"
     fi
 }}
 
 define-command -docstring "noexpandtab: use tab character to indent and align" \
 noexpandtab %{
-    set-option window smarttab_mode 'noexpandtab'
-    remove-hooks window smarttab-mode
+    set-option buffer smarttab_mode 'noexpandtab'
+    remove-hooks buffer smarttab-mode
     smarttab-set
-    set-option window indentwidth 0
-    set-option window aligntab true
-    hook -group smarttab-mode window InsertDelete ' ' %{ try %sh{
+    set-option buffer indentwidth 0
+    set-option buffer aligntab true
+    hook -group smarttab-mode buffer InsertDelete ' ' %{ try %sh{
         if [ $kak_opt_softtabstop -gt 1 ]; then
             echo 'execute-keys -draft <a-h><a-k> "^\h+.\z" <ret>I<space><esc><lt>'
         fi
@@ -43,12 +43,12 @@ noexpandtab %{
 
 define-command -docstring "expandtab: use space character to indent and align" \
 expandtab %{
-    set-option window smarttab_mode 'expandtab'
-    remove-hooks window smarttab-mode
+    set-option buffer smarttab_mode 'expandtab'
+    remove-hooks buffer smarttab-mode
     smarttab-set
-    set-option window aligntab false
-    hook -group smarttab-mode window InsertChar '\t' %{ execute-keys -draft h@ }
-    hook -group smarttab-mode window InsertDelete ' ' %{ try %sh{
+    set-option buffer aligntab false
+    hook -group smarttab-mode buffer InsertChar '\t' %{ execute-keys -draft h@ }
+    hook -group smarttab-mode buffer InsertDelete ' ' %{ try %sh{
         if [ $kak_opt_softtabstop -gt 1 ]; then
             echo 'execute-keys -draft <a-h><a-k> "^\h+.\z" <ret>I<space><esc><lt>'
         fi
@@ -59,17 +59,17 @@ expandtab %{
 
 define-command -docstring "smarttab: use tab character for indentation and space character for alignment" \
 smarttab %{
-    set-option window smarttab_mode 'smarttab'
-    remove-hooks window smarttab-mode
+    set-option buffer smarttab_mode 'smarttab'
+    remove-hooks buffer smarttab-mode
     smarttab-set
-    set-option window indentwidth 0
-    set-option window aligntab false
-    hook -group smarttab-mode window InsertChar '\t' %{ try %{
+    set-option buffer indentwidth 0
+    set-option buffer aligntab false
+    hook -group smarttab-mode buffer InsertChar '\t' %{ try %{
         execute-keys -draft <a-h><a-k> "^\h*.\z" <ret>
     } catch %{
         execute-keys -draft h@
     }}
-    hook -group smarttab-mode window InsertDelete ' ' %{ try %sh{
+    hook -group smarttab-mode buffer InsertDelete ' ' %{ try %sh{
         if [ $kak_opt_softtabstop -gt 1 ]; then
             echo 'execute-keys -draft <a-h><a-k> "^\h+.\z" <ret>I<space><esc><lt>'
         fi
