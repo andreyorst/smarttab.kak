@@ -22,7 +22,7 @@ Clone this repo somewhere
 git clone https://github.com/andreyorst/smarttab.kak.git
 ```
 
-And `source` the `smarttab.kak` script from it.
+You can put this repo to your `autoload` directory, or manually `source` the `smarttab.kak` script in your configuration file.
 
 After that you can use **smarttab.kak**.
 
@@ -44,10 +44,24 @@ lines that are being indented with the spaces by hitting <kbd>Backspace</kbd>, y
 option. This option describes how many `space`s should be treated as single `tab` character when deleting
 spaces with backspace.
 
-If you've used **plug.kak** for installation, you can set it within the `plug` command:
+In order to automatically enable different modes for different languages you can use `hook`s like so:
+
 ```kak
-plug "andreyorst/smarttab.kak" %{
-    set-option global softtabstop 4 # or other preferred value
-}
+hook WinSetOption filetype=c smarttab
+hook WinSetOption filetype=rust expandtab
 ```
 
+If you've used **plug.kak** for installation, it's better to configure **smarttab.kak** it within the `plug` command:
+
+```sh
+plug "andreyorst/smarttab.kak" %{
+    # when `backspace' is pressed, 4 spaces are deleted at once
+    set-option global softtabstop 4
+    # these languages will use `expandtab' behavior
+    hook global WinSetOption filetype=(rust|markdown|kak|lisp|scheme|sh|perl) expandtab
+    # these languages will use `noexpandtab' behavior
+    hook global WinSetOption filetype=(makefile|gas) noexpandtab
+    # these languages will use `smarttab' behavior
+    hook global WinSetOption filetype=(c|cpp) smarttab
+}
+```
