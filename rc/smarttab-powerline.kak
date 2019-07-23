@@ -8,6 +8,10 @@
 # │ GitHub.com/andreyorst/powerline.kak  │
 # ╰──────────────────────────────────────╯
 
+hook global ModuleLoaded powerline %{ require-module powerline_expandtab }
+
+provide-module powerline_expandtab %§
+
 declare-option -hidden bool powerline_module_smarttab true
 
 declare-option -hidden str-list powerline_modules
@@ -38,3 +42,4 @@ define-command -hidden powerline-toggle-smarttab -params ..1 %{ evaluate-command
     echo "powerline-rebuild"
 }}
 
+§

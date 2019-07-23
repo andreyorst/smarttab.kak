@@ -10,24 +10,42 @@
 # │ GitHub.com/andreyorst/smarttab.kak │
 # ╰────────────────────────────────────╯
 
+define-command -docstring "noexpandtab: use tab character to indent and align" \
+noexpandtab %{ require-module smarttab; noexpandtab-impl }
+
+define-command -docstring "expandtab: use space character to indent and align" \
+expandtab %{ require-module smarttab; expandtab-impl }
+
+define-command -docstring "smarttab: use tab character for indentation and space character for alignment" \
+smarttab %{ require-module smarttab; smarttab-impl }
+
+provide-module smarttab %§
+
+# Options
+# ‾‾‾‾‾‾‾
+
 declare-option -docstring "amount of spaces that should be treated as single tab character when deleting spaces" \
 int softtabstop 0
 
 declare-option -docstring "displays current tab handling mode" \
 str smarttab_mode ''
 
-declare-option -hidden int oldindentwidth %opt{indentwidth}
-define-command -hidden smarttab-set %{ evaluate-commands %sh{
-    if [ $kak_opt_indentwidth -eq 0 ]; then
-        printf "%s\n" "set-option buffer indentwidth $kak_opt_oldindentwidth"
-    else
-        printf "%s\n" "set-option buffer oldindentwidth $kak_opt_indentwidth"
-    fi
-}}
+declare-option -docstring 'what text to display in ''%opt{smarttab_mode}'' when expandtab mode is on' \
+str smarttab_expandtab_mode_name 'expandtab'
 
-define-command -docstring "noexpandtab: use tab character to indent and align" \
-noexpandtab %{
-    set-option buffer smarttab_mode 'noexpandtab'
+declare-option -docstring 'what text to display in ''%opt{smarttab_mode}'' when expandtab mode is on' \
+str smarttab_noexpandtab_mode_name 'noexpandtab'
+
+declare-option -docstring 'what text to display in ''%opt{smarttab_mode}'' when expandtab mode is on' \
+str smarttab_smarttab_mode_name 'smarttab'
+
+declare-option -hidden int oldindentwidth %opt{indentwidth}
+
+# Commands
+# ‾‾‾‾‾‾‾‾
+
+define-command -hidden noexpandtab-impl %{
+    set-option buffer smarttab_mode %opt{smarttab_noexpandtab_mode_name}
     remove-hooks buffer smarttab-mode
     smarttab-set
     set-option buffer indentwidth 0
@@ -41,9 +59,8 @@ noexpandtab %{
     }}}
 }
 
-define-command -docstring "expandtab: use space character to indent and align" \
-expandtab %{
-    set-option buffer smarttab_mode 'expandtab'
+define-command -hidden expandtab-impl %{
+    set-option buffer smarttab_mode %opt{smarttab_expandtab_mode_name}
     remove-hooks buffer smarttab-mode
     smarttab-set
     set-option buffer aligntab false
@@ -57,9 +74,8 @@ expandtab %{
     }}}
 }
 
-define-command -docstring "smarttab: use tab character for indentation and space character for alignment" \
-smarttab %{
-    set-option buffer smarttab_mode 'smarttab'
+define-command -hidden smarttab-impl %{
+    set-option buffer smarttab_mode %opt{smarttab_smarttab_mode_name}
     remove-hooks buffer smarttab-mode
     smarttab-set
     set-option buffer indentwidth 0
@@ -78,3 +94,12 @@ smarttab %{
     }}}
 }
 
+define-command -hidden smarttab-set %{ evaluate-commands %sh{
+    if [ $kak_opt_indentwidth -eq 0 ]; then
+        printf "%s\n" "set-option buffer indentwidth $kak_opt_oldindentwidth"
+    else
+        printf "%s\n" "set-option buffer oldindentwidth $kak_opt_indentwidth"
+    fi
+}}
+
+§
