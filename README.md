@@ -54,10 +54,10 @@ hook global WinSetOption filetype=rust expandtab
 To adjust **smarttab.kak** related options you need to use `ModuleLoaded` hook,
 because all options are defined withing the `smarttab` module:
 
-```kak
+```sh
 hook global ModuleLoaded smarttab %{
     set-option global sofftabstop 4
-    # youcan configure text that is being used to represent curent active mode
+    # you can configure text that is being used to represent curent active mode
     set-option global smarttab_expandtab_mode_name 'exp'
     set-option global smarttab_noexpandtab_mode_name 'noexp'
     set-option global smarttab_smarttab_mode_name 'smart'
