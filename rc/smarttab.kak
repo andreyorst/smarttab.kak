@@ -64,7 +64,7 @@ define-command -hidden expandtab-impl %{
     remove-hooks buffer smarttab-mode
     smarttab-set
     set-option buffer aligntab false
-    hook -group smarttab-mode buffer InsertChar '\t' %{ execute-keys -draft "h@" }
+    hook -group smarttab-mode buffer InsertChar '\t' %{ execute-keys -draft "h%opt{indentwidth}@" }
     hook -group smarttab-mode buffer InsertDelete ' ' %{ try %sh{
         if [ $kak_opt_softtabstop -gt 1 ]; then
             printf "%s\n" 'execute-keys -draft -itersel "<a-h><a-k>^\h+.\z<ret>I<space><esc><lt>"'
