@@ -1,3 +1,5 @@
+# THIS PLUGIN IS NOT ACTIVELY MAINTAINED. FOR MORE DETAILS PLEASE SEE [THIS DISCOURSE POST](https://discuss.kakoune.com/t/maintainance-warning-and-request)
+
 # smarttab.kak
 ![license](https://img.shields.io/github/license/andreyorst/smarttab.kak.svg)
 
