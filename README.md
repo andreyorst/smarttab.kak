@@ -35,7 +35,7 @@ This plugin adds these three commands to toggle different policy when using <kbd
   <kbd>Tab</kbd> will insert `\t` character, and <kbd>></kbd> will use `\t` character when indenting.
   Aligning cursors with <kbd>&</kbd> uses `\t` character.
 * `expandtab` - use `space` for everything.
-  <kbd>Tab</kbd> will insert `%opt{tabstop}` amount of spaces, and <kbd>></kbd> will indent with spaces.
+  <kbd>Tab</kbd> will insert `%opt{indentwidth}` amount of spaces, and <kbd>></kbd> will indent with spaces.
 * `smarttab` - indent with `tab`, align with `space`.
   <kbd>Tab</kbd> will insert `\t` character if your cursor is inside indentation area, e.g. before any
   non-whitespace character, and insert spaces if cursor is after any non-whitespace character. Aligning
