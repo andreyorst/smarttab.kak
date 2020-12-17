@@ -58,7 +58,7 @@ because all options are defined withing the `smarttab` module:
 
 ```sh
 hook global ModuleLoaded smarttab %{
-    set-option global sofftabstop 4
+    set-option global softtabstop 4
     # you can configure text that is being used to represent curent active mode
     set-option global smarttab_expandtab_mode_name 'exp'
     set-option global smarttab_noexpandtab_mode_name 'noexp'
