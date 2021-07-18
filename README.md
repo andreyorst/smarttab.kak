@@ -38,6 +38,7 @@ This plugin adds these three commands to toggle different policy when using <kbd
   <kbd>Tab</kbd> will insert `\t` character if your cursor is inside indentation area, e.g. before any
   non-whitespace character, and insert spaces if cursor is after any non-whitespace character. Aligning
   cursors with <kbd>&</kbd> uses `space`.
+* `autoconfigtab` - choose the above based upon one of the existing settings (see later section).
 
 By default **smarttab.kak** affects only <kbd>Tab</kbd> and <kbd>></kbd> keys. If you want to deindent
 lines that are being indented with the spaces by hitting <kbd>Backspace</kbd>, you can set `softtabstop`
@@ -81,3 +82,28 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
     hook global WinSetOption filetype=(c|cpp) smarttab
 }
 ```
+
+## `autoconfigtab` configuration
+
+If you just want to set the behavior based upon your `editorconfig` settings, you can use the `autoconfigtab` setting:
+
+```kak
+hook global BufCreate .* %{
+    editorconfig-load
+    autoconfigtab
+}
+```
+
+This config will choose `expandtab` or `noexpandtab` based upon the `indent_style` setting as `space` or `tab` respectively.
+
+If you'd prefer to use `smarttab` instead of `noexpandtab` for `indent_style = tab` (without affecting `indent_style = space`), you can manually override the `aligntab` option to `false` before running `autoconfigtab`, as seen in the below config:
+
+```kak
+hook global BufCreate .* %{
+    editorconfig-load
+    set-option buffer aligntab false
+    autoconfigtab
+}
+```
+
+Currently, `autoconfigtab` does not cover the case where `indentwidth` is nonzero but `aligntab` is set to `true`, as this would mean indenting with spaces and aligning with tabs. In this particular case, tab alignment takes priority and `noexpandtab` is chosen.

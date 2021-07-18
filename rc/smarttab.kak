@@ -19,6 +19,10 @@ expandtab %{ require-module smarttab; expandtab-impl }
 define-command -docstring "smarttab: use tab character for indentation and space character for alignment" \
 smarttab %{ require-module smarttab; smarttab-impl }
 
+# note: there is no space-indent, tab-align setting; this is assumed to be equivalent to noexpandtab
+define-command -docstring "autoconfigtab: use tab or space character to indent and align based upon existing settings (e.g. via editorconfig)" \
+autoconfigtab %{ require-module smarttab; autoconfigtab-impl }
+
 provide-module smarttab %§
 
 # Options
@@ -93,6 +97,16 @@ define-command -hidden smarttab-impl %{
         execute-keys -itersel -draft "h%opt{softtabstop}<s-h>2<s-l>s\h+\z<ret>d"
     }}}
 }
+
+define-command -hidden autoconfigtab-impl %{ evaluate-commands %sh{
+    if [ $kak_opt_aligntab = true ]; then
+        echo "noexpandtab"
+    elif [ $kak_opt_indentwidth -eq 0 ]; then
+        echo "smarttab"
+    else
+        echo "expandtab"
+    fi
+}}
 
 define-command -hidden smarttab-set %{ evaluate-commands %sh{
     if [ $kak_opt_indentwidth -eq 0 ]; then
