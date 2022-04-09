@@ -1,8 +1,8 @@
 # smarttab.kak
 ![license](https://img.shields.io/github/license/andreyorst/smarttab.kak.svg)
 
-**smarttab.kak** is a plugin for [Kakoune](https://github.com/mawww/kakoune) editor.
-It provides three different ways of handling indentation and alignment with tab key.
+**smarttab.kak** is a plugin for the editor  [Kakoune](https://github.com/mawww/kakoune).
+It provides three different ways for handling indentation and alignment with the tab key.
 
 ## Installation
 
@@ -11,48 +11,55 @@ Add this to your `kakrc`:
 ```kak
 plug "andreyorst/smarttab.kak"
 ```
-Source your `kakrc` or restart Kakoune, and execute `:plug-install`. Or if you don't want
-to source configuration file or restart Kakoune, simply run `plug-install andreyorst/smarttab.kak`.
-It will be enabled automatically.
+Source your `kakrc`, or restart Kakoune.
+Then execute `:plug-install`.
+Or, if you don't want to restart Kakoune or source its config, simply run `plug-install andreyorst/smarttab.kak`.
+It will then be enabled automatically.
 
 ### Without plugin manager
 
-Clone this repo somewhere
+Clone this repo:
 ```sh
 git clone https://github.com/andreyorst/smarttab.kak.git
 ```
 
-You can put this repo to your `autoload` directory, or manually `source` the `smarttab.kak` script in your configuration file.
+You can put this repo in your `autoload` directory,
+or else manually `source` the `smarttab.kak` script in your configuration file.
 
-After that you can use **smarttab.kak**.
+After that, you can use **smarttab.kak**.
+
+#### Setting the default mode
+In your `kakrc` add:
+hook global BufOpenFile .* _mode_
+hook global BufNewFile  .* _mode_
 
 ## Usage
 
-This plugin adds these three commands to toggle different policy when using <kbd>Tab</kbd> and <kbd>></kbd> keys:
+This plugin adds three commands to toggle between different policies when using the <kbd>Tab</kbd> and <kbd>></kbd> keys:
 * `noexpandtab` - use `tab` for everything.
-  <kbd>Tab</kbd> will insert `\t` character, and <kbd>></kbd> will use `\t` character when indenting.
-  Aligning cursors with <kbd>&</kbd> uses `\t` character.
+  <kbd>Tab</kbd> will insert the `\t` character, and <kbd>></kbd> will use the `\t` character when indenting.
+  Aligning cursors with <kbd>&</kbd> uses the `\t` character.
 * `expandtab` - use `space` for everything.
   <kbd>Tab</kbd> will insert `%opt{indentwidth}` amount of spaces, and <kbd>></kbd> will indent with spaces.
 * `smarttab` - indent with `tab`, align with `space`.
-  <kbd>Tab</kbd> will insert `\t` character if your cursor is inside indentation area, e.g. before any
-  non-whitespace character, and insert spaces if cursor is after any non-whitespace character. Aligning
-  cursors with <kbd>&</kbd> uses `space`.
+  <kbd>Tab</kbd> will insert the `\t` character if your cursor is inside an indentation area,
+  e.g., before any non-whitespace character,
+  and insert spaces if the cursor is after any non-whitespace character.
+  Aligning cursors with <kbd>&</kbd> uses `space`.
 * `autoconfigtab` - choose the above based upon one of the existing settings (see later section).
 
-By default **smarttab.kak** affects only <kbd>Tab</kbd> and <kbd>></kbd> keys. If you want to deindent
-lines that are being indented with the spaces by hitting <kbd>Backspace</kbd>, you can set `softtabstop`
-option. This option describes how many `space`s should be treated as single `tab` character when deleting
-spaces with backspace.
+By default, **smarttab.kak** affects only the <kbd>Tab</kbd> and <kbd>></kbd> keys.
+If you want to deindent lines that are being indented with spaces when hitting <kbd>Backspace</kbd>, you can set the `softtabstop`
+option. This option specifies how many `space`s should be treated as a single `tab` character when deleting them with a backspace.
 
-In order to automatically enable different modes for different languages you can use `hook`s like so:
+In order to automatically enable different modes for different languages, you can use `hook`s like so:
 
 ```kak
 hook global WinSetOption filetype=c smarttab
 hook global WinSetOption filetype=rust expandtab
 ```
 
-To adjust **smarttab.kak** related options you need to use `ModuleLoaded` hook,
+To adjust **smarttab.kak** related options, you need to use the  `ModuleLoaded` hook,
 because all options are defined withing the `smarttab` module:
 
 ```sh
@@ -65,9 +72,8 @@ hook global ModuleLoaded smarttab %{
 }
 ```
 
-If you've used **plug.kak** for installation, it's better to configure
-**smarttab.kak** it within the `plug` command, because it can handle lazy
-loading of configurations for the plugin, and configure editor behavior:
+If you've used **plug.kak** for installation,
+it's better to configure **smarttab.kak** from within the `plug` command because it can handle lazy loading the configurations for the plugin, as well as configure the editor's behavior:
 
 ```sh
 plug "andreyorst/smarttab.kak" defer smarttab %{
@@ -94,7 +100,7 @@ hook global BufCreate .* %{
 }
 ```
 
-This config will choose `expandtab` or `noexpandtab` based upon the `indent_style` setting as `space` or `tab` respectively.
+This config will choose `expandtab` or `noexpandtab` based upon whether `indent_style` is set as `space` or `tab` respectively.
 
 If you'd prefer to use `smarttab` instead of `noexpandtab` for `indent_style = tab` (without affecting `indent_style = space`), you can manually override the `aligntab` option to `false` before running `autoconfigtab`, as seen in the below config:
 
@@ -106,4 +112,5 @@ hook global BufCreate .* %{
 }
 ```
 
-Currently, `autoconfigtab` does not cover the case where `indentwidth` is nonzero but `aligntab` is set to `true`, as this would mean indenting with spaces and aligning with tabs. In this particular case, tab alignment takes priority and `noexpandtab` is chosen.
+Currently, `autoconfigtab` does not cover the case where `indentwidth` is nonzero but `aligntab` is set to `true`, as this would mean indenting with spaces and aligning with tabs.
+In this particular case, tab alignment takes priority and `noexpandtab` is chosen.
