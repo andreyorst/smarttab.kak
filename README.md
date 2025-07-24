@@ -1,3 +1,7 @@
+# Project status
+
+Because I have stopped using Kakoune, this project will not receive active maintenance. The issues section has been closed, as I do not plan to address any issues myself. However, I welcome pull requests from anyone who encounters problems with this plugin and knows how to resolve them.
+
 # smarttab.kak
 ![license](https://img.shields.io/github/license/andreyorst/smarttab.kak.svg)
 
